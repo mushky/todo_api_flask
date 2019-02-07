@@ -46,13 +46,10 @@ def remove_todo(id):
 		delete_todo = todos.delete_one({'_id':bson.ObjectId(oid=str(id))})
 
 		if delete_todo.deleted_count > 0:
-			# Prepare the response
 			return "", 204
 		else:
-			# Resource not found
 			return "", 404
 	except:
-		# Error while trying to delete the resource
 		# Add message for debugging purpose
 		return "", 500
 
@@ -67,19 +64,15 @@ def update_todo(id):
 
 @app.route('/api/v1/resources/todos/complete', methods=['GET'])
 def complete_todo():
-	the_id = request.args.get('id')
-
-	print the_id
+	id = request.args.get('id')
 
 	todos = mongo.db.todos
-	todo = todos.find_one({'_id':bson.ObjectId(oid=str(the_id))})
+	todo = todos.find_one({'_id':bson.ObjectId(oid=str(id))})
 	if todo['complete'] == False:
-		todos.update_one({'_id':bson.ObjectId(oid=str(the_id))},{'$set': {'complete': True }})
+		todos.update_one({'_id':bson.ObjectId(oid=str(id))},{'$set': {'complete': True }})
 	else:
-		todos.update_one({'_id':bson.ObjectId(oid=str(the_id))},{'$set': {'complete': False}})
+		todos.update_one({'_id':bson.ObjectId(oid=str(id))},{'$set': {'complete': False}})
 
-	return 'complete'
-
-
+	return 'complete called'
 
 app.run()
