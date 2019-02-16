@@ -18,7 +18,7 @@ def get_all_todos():
 	todos = mongo.db.todos
 	output = []
 	for todo in todos.find():
-		output.append({'text' : todo['text'], 'complete' : todo['complete']})
+		output.append({'text' : todo['text'], 'complete' : todo['complete'], 'id':str(todo['_id'])})
 	return jsonify({'result' : output})
 
 # Post Todo
@@ -31,7 +31,7 @@ def new():
 	todo_id = todo.insert({'text': input_json['text'], 'complete': input_json['complete']})
 	new_todo = todo.find_one({"_id" : todo_id})
 	
-	output = {'text': new_todo['text'], 'complete': new_todo['complete']}
+	output = {'text': new_todo['text'], 'complete': new_todo['complete'], 'id':str(new_todo['_id'])}
 
 	return jsonify({'result': output})
 
