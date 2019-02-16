@@ -76,11 +76,10 @@ def complete_todo():
 
 	todos = mongo.db.todos
 	todo = todos.find_one({'_id':bson.ObjectId(oid=str(id))})
-	if todo['complete'] == False:
-		todos.update_one({'_id':bson.ObjectId(oid=str(id))},{'$set': {'complete': True }})
-	else:
-		todos.update_one({'_id':bson.ObjectId(oid=str(id))},{'$set': {'complete': False}})
+	todoStatus = todos.update_one({'_id':bson.ObjectId(oid=str(id))},{'$set': {'complete': True }}) if todo['complete'] == False else todos.update_one({'_id':bson.ObjectId(oid=str(id))},{'$set': {'complete': False}})
 
 	return 'complete called'
 
-app.run()
+
+if __name__ == "__main__":
+	app.run()
