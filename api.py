@@ -31,7 +31,7 @@ def new():
 	todo_id = todo.insert({'text': input_json['text'], 'complete': input_json['complete']})
 	new_todo = todo.find_one({"_id" : todo_id})
 	
-	output = {'text': new_todo['text'], 'complete': new_todo['complete'], 'id':str(new_todo['_id'])}
+	output = {'text': new_todo['text'], 'complete': new_todo['complete'], '_id':str(new_todo['_id'])}
 
 	return jsonify({'result': output})
 
