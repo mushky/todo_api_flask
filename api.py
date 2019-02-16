@@ -83,4 +83,5 @@ def complete_todo():
 
 	return 'complete called'
 
-app.run()
+if __name__ == "__main__":
+	app.run()
