@@ -4,8 +4,10 @@ from flask_pymongo import PyMongo
 import bson
 from bson import json_util, ObjectId
 import json
+from flask_cors import CORS
 
 app = flask.Flask(__name__)
+CORS(app)
 app.config["DEBUG"] = True
 app.config['MONGO_DBNAME'] = 'TodoDB'
 app.config['MONGO_URI'] = 'mongodb://localhost:27017/Todo'
@@ -19,7 +21,7 @@ def get_all_todos():
 	output = []
 	for todo in todos.find():
 		output.append({'text' : todo['text'], 'complete' : todo['complete'], 'id':str(todo['_id'])})
-	return jsonify({'result' : output})
+	return jsonify({'content' : output})
 
 # Post Todo
 @app.route('/api/v1/resources/new', methods=['POST'])
@@ -33,7 +35,7 @@ def new():
 	
 	output = {'text': new_todo['text'], 'complete': new_todo['complete'], '_id':str(new_todo['_id'])}
 
-	return jsonify({'result': output})
+	return jsonify({'content': output})
 
 # Get Todo by Id
 @app.route('/api/v1/resources/todos/<id>', methods=['GET'])
@@ -73,15 +75,19 @@ def update_todo(id):
 @app.route('/api/v1/resources/todos/complete', methods=['GET'])
 def complete_todo():
 	id = request.args.get('id')
-
+	print 'Complete Hit'
 	todos = mongo.db.todos
 	todo = todos.find_one({'_id':bson.ObjectId(oid=str(id))})
 	if todo['complete'] == False:
 		todos.update_one({'_id':bson.ObjectId(oid=str(id))},{'$set': {'complete': True }})
+		print "True"
 	else:
 		todos.update_one({'_id':bson.ObjectId(oid=str(id))},{'$set': {'complete': False}})
+		print "False"
 
 	return 'complete called'
 
 if __name__ == "__main__":
 	app.run()
+
+
