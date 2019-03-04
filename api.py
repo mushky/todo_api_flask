@@ -75,15 +75,12 @@ def update_todo(id):
 @app.route('/api/v1/resources/todos/complete', methods=['GET'])
 def complete_todo():
 	id = request.args.get('id')
-	print 'Complete Hit'
 	todos = mongo.db.todos
 	todo = todos.find_one({'_id':bson.ObjectId(oid=str(id))})
 	if todo['complete'] == False:
 		todos.update_one({'_id':bson.ObjectId(oid=str(id))},{'$set': {'complete': True }})
-		print "True"
 	else:
 		todos.update_one({'_id':bson.ObjectId(oid=str(id))},{'$set': {'complete': False}})
-		print "False"
 
 	return 'complete called'
 
